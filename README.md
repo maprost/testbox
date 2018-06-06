@@ -26,6 +26,8 @@ go get github.com/maprost/testbox
 - `should.NotBeSimilar`(`t`,`collection`, `collection`) -> (only for `array`/`slice`) check if the two collections contains at least one different element
 - `should.Fail` -> stops the tests with the given error message
 
+same for `must`.
+
 ## Usage
 Please look into the test files to see the possibilities. For the first look
 here some examples:
