@@ -97,8 +97,8 @@ func NotBeNil(t testing.TB, act interface{}, msgArgs ...interface{}) {
 	}
 }
 
-// HaveError checks if 'err' != nil
-func HaveError(t testing.TB, e error, msgArgs ...interface{}) {
+// BeError checks if 'err' != nil
+func BeError(t testing.TB, e error, msgArgs ...interface{}) {
 	t.Helper()
 	if ok, err := is.Errorf(e, msgArgs); !ok {
 		fail(t, err)
@@ -107,8 +107,8 @@ func HaveError(t testing.TB, e error, msgArgs ...interface{}) {
 	}
 }
 
-// HaveNoError checks if 'err' == nil
-func HaveNoError(t testing.TB, e error, msgArgs ...interface{}) {
+// BeNoError checks if 'err' == nil
+func BeNoError(t testing.TB, e error, msgArgs ...interface{}) {
 	t.Helper()
 	if ok, err := is.NoErrorf(e, msgArgs); !ok {
 		fail(t, err)

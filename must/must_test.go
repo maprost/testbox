@@ -62,18 +62,18 @@ func TestSimple(t *testing.T) {
 	})
 
 	t.Run("error", func(t *testing.T) {
-		HaveError(t, fmt.Errorf("blob"))
+		BeError(t, fmt.Errorf("blob"))
 
 		testToFail(t, func(t testing.TB) {
-			HaveError(t, nil)
+			BeError(t, nil)
 		})
 	})
 
 	t.Run("not error", func(t *testing.T) {
-		HaveNoError(t, nil)
+		BeNoError(t, nil)
 
 		testToFail(t, func(t testing.TB) {
-			HaveNoError(t, fmt.Errorf("blob"))
+			BeNoError(t, fmt.Errorf("blob"))
 		})
 	})
 
