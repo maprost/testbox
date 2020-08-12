@@ -1,11 +1,11 @@
 package internal_test
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 	"testing"
 
-	"errors"
 	"github.com/maprost/testbox/internal"
 	"github.com/maprost/testbox/should"
 )
@@ -26,11 +26,20 @@ func clearStrColor(s string) string {
 // ------------------------ Message ---------------------------
 
 func TestErrorf(t *testing.T) {
-	should.BeEqual(t, clearErrColor(internal.Errorf([]interface{}{"jo"}, "no", "so")),
-		fmt.Errorf("✘ jo\nso"))
+	t.Run("test msg", func(t *testing.T) {
+		should.BeEqual(t, clearErrColor(internal.Errorf([]interface{}{"jo"}, "no", "so")),
+			fmt.Errorf("✘ jo\nso"))
+	})
 
-	should.BeEqual(t, clearErrColor(internal.Errorf([]interface{}{}, "no", "so")),
-		fmt.Errorf("✘ no\nso"))
+	t.Run("test msg with params", func(t *testing.T) {
+		should.BeEqual(t, clearErrColor(internal.Errorf([]interface{}{"int: %d and a string: %s", 12, "hello"}, "no", "so")),
+			fmt.Errorf("✘ int: 12 and a string: hello\nso"))
+	})
+
+	t.Run("test default msg", func(t *testing.T) {
+		should.BeEqual(t, clearErrColor(internal.Errorf([]interface{}{}, "no", "so")),
+			fmt.Errorf("✘ no\nso"))
+	})
 }
 
 func TestTypeError(t *testing.T) {

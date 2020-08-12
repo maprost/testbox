@@ -7,6 +7,10 @@ import (
 	"strings"
 )
 
+const (
+	spacerSize = 12
+)
+
 var (
 	succIcon = TxtColor(Green, "✔")
 	failIcon = TxtColor(Red, "✘")
@@ -21,7 +25,7 @@ var (
 )
 
 func Spacer(txt string) string {
-	for i := len(txt); i < 12; i++ {
+	for i := len(txt); i < spacerSize; i++ {
 		txt = " " + txt
 	}
 
@@ -34,7 +38,8 @@ func Errorf(msgArgs []interface{}, defaultMsg string, valueCheck string) error {
 	msg := defaultMsg
 
 	if len(msgArgs) > 0 {
-		if _, ok := (msgArgs[0]).(string); ok { // first part is a string
+		_, ok := (msgArgs[0]).(string)
+		if ok { // first part is a string
 			msg = fmt.Sprintf(msgArgs[0].(string), msgArgs[1:]...)
 		}
 	}
