@@ -10,7 +10,7 @@ import (
 // BeEqual checks if 'act' == 'exp'
 func BeEqual(t testing.TB, act interface{}, exp interface{}, msgArgs ...interface{}) {
 	t.Helper()
-	if ok, err := is.Equalf(act, exp, msgArgs); !ok {
+	if ok, err := is.Equalf(act, exp, msgArgs...); !ok {
 		fail(t, err)
 	} else {
 		success(t)
@@ -20,7 +20,7 @@ func BeEqual(t testing.TB, act interface{}, exp interface{}, msgArgs ...interfac
 // NotBeEqual checks if 'act' != 'exp'
 func NotBeEqual(t testing.TB, act interface{}, exp interface{}, msgArgs ...interface{}) {
 	t.Helper()
-	if ok, err := is.NotEqualf(act, exp, msgArgs); !ok {
+	if ok, err := is.NotEqualf(act, exp, msgArgs...); !ok {
 		fail(t, err)
 	} else {
 		success(t)
@@ -30,7 +30,7 @@ func NotBeEqual(t testing.TB, act interface{}, exp interface{}, msgArgs ...inter
 // BeTrue checks if 'act' == true
 func BeTrue(t testing.TB, act bool, msgArgs ...interface{}) {
 	t.Helper()
-	if ok, err := is.Truef(act, msgArgs); !ok {
+	if ok, err := is.Truef(act, msgArgs...); !ok {
 		fail(t, err)
 	} else {
 		success(t)
@@ -40,7 +40,7 @@ func BeTrue(t testing.TB, act bool, msgArgs ...interface{}) {
 // BeFalse checks if 'act' == false
 func BeFalse(t testing.TB, act bool, msgArgs ...interface{}) {
 	t.Helper()
-	if ok, err := is.Falsef(act, msgArgs); !ok {
+	if ok, err := is.Falsef(act, msgArgs...); !ok {
 		fail(t, err)
 	} else {
 		success(t)
@@ -50,7 +50,7 @@ func BeFalse(t testing.TB, act bool, msgArgs ...interface{}) {
 // HaveLength checks if len(col) == 'exp'
 func HaveLength(t testing.TB, col interface{}, len int, msgArgs ...interface{}) {
 	t.Helper()
-	if ok, err := is.Lengthf(col, len, msgArgs); !ok {
+	if ok, err := is.Lengthf(col, len, msgArgs...); !ok {
 		fail(t, err)
 	} else {
 		success(t)
@@ -60,7 +60,7 @@ func HaveLength(t testing.TB, col interface{}, len int, msgArgs ...interface{}) 
 // BeEmpty checks if len(col) == 0
 func BeEmpty(t testing.TB, col interface{}, msgArgs ...interface{}) {
 	t.Helper()
-	if ok, err := is.Emptyf(col, msgArgs); !ok {
+	if ok, err := is.Emptyf(col, msgArgs...); !ok {
 		fail(t, err)
 	} else {
 		success(t)
@@ -70,7 +70,7 @@ func BeEmpty(t testing.TB, col interface{}, msgArgs ...interface{}) {
 // NotBeEmpty checks if len(col) != 0
 func NotBeEmpty(t testing.TB, col interface{}, msgArgs ...interface{}) {
 	t.Helper()
-	if ok, err := is.NotEmptyf(col, msgArgs); !ok {
+	if ok, err := is.NotEmptyf(col, msgArgs...); !ok {
 		fail(t, err)
 	} else {
 		success(t)
@@ -80,7 +80,7 @@ func NotBeEmpty(t testing.TB, col interface{}, msgArgs ...interface{}) {
 // BeNil checks if 'act' == nil
 func BeNil(t testing.TB, act interface{}, msgArgs ...interface{}) {
 	t.Helper()
-	if ok, err := is.Nilf(act, msgArgs); !ok {
+	if ok, err := is.Nilf(act, msgArgs...); !ok {
 		fail(t, err)
 	} else {
 		success(t)
@@ -90,7 +90,7 @@ func BeNil(t testing.TB, act interface{}, msgArgs ...interface{}) {
 // NotBeNil checks if 'act' != nil
 func NotBeNil(t testing.TB, act interface{}, msgArgs ...interface{}) {
 	t.Helper()
-	if ok, err := is.NotNilf(act, msgArgs); !ok {
+	if ok, err := is.NotNilf(act, msgArgs...); !ok {
 		fail(t, err)
 	} else {
 		success(t)
@@ -100,7 +100,7 @@ func NotBeNil(t testing.TB, act interface{}, msgArgs ...interface{}) {
 // BeError checks if 'err' != nil
 func BeError(t testing.TB, e error, msgArgs ...interface{}) {
 	t.Helper()
-	if ok, err := is.Errorf(e, msgArgs); !ok {
+	if ok, err := is.Errorf(e, msgArgs...); !ok {
 		fail(t, err)
 	} else {
 		success(t)
@@ -110,7 +110,7 @@ func BeError(t testing.TB, e error, msgArgs ...interface{}) {
 // BeNoError checks if 'err' == nil
 func BeNoError(t testing.TB, e error, msgArgs ...interface{}) {
 	t.Helper()
-	if ok, err := is.NoErrorf(e, msgArgs); !ok {
+	if ok, err := is.NoErrorf(e, msgArgs...); !ok {
 		fail(t, err)
 	} else {
 		success(t)
@@ -121,7 +121,7 @@ func BeNoError(t testing.TB, e error, msgArgs ...interface{}) {
 // if 'col' is a map, it will check if the map have a value that is equal with 'exp'
 func Contain(t testing.TB, col interface{}, exp interface{}, msgArgs ...interface{}) {
 	t.Helper()
-	if ok, err := is.Containingf(col, exp, msgArgs); !ok {
+	if ok, err := is.Containingf(col, exp, msgArgs...); !ok {
 		fail(t, err)
 	} else {
 		success(t)
@@ -132,7 +132,7 @@ func Contain(t testing.TB, col interface{}, exp interface{}, msgArgs ...interfac
 // if 'col' is a map, it will check if the map have not a value that is equal with 'exp'
 func NotContain(t testing.TB, col interface{}, exp interface{}, msgArgs ...interface{}) {
 	t.Helper()
-	if ok, err := is.NotContainingf(col, exp, msgArgs); !ok {
+	if ok, err := is.NotContainingf(col, exp, msgArgs...); !ok {
 		fail(t, err)
 	} else {
 		success(t)
@@ -142,7 +142,7 @@ func NotContain(t testing.TB, col interface{}, exp interface{}, msgArgs ...inter
 // BeSimilar checks if two arrays/slices contains the same items.
 func BeSimilar(t testing.TB, act interface{}, exp interface{}, msgArgs ...interface{}) {
 	t.Helper()
-	if ok, err := is.Similarf(act, exp, msgArgs); !ok {
+	if ok, err := is.Similarf(act, exp, msgArgs...); !ok {
 		fail(t, err)
 	} else {
 		success(t)
@@ -152,7 +152,7 @@ func BeSimilar(t testing.TB, act interface{}, exp interface{}, msgArgs ...interf
 // NotBeSimilar checks if two arrays/slices contains at least one different item.
 func NotBeSimilar(t testing.TB, act interface{}, exp interface{}, msgArgs ...interface{}) {
 	t.Helper()
-	if ok, err := is.NotSimilarf(act, exp, msgArgs); !ok {
+	if ok, err := is.NotSimilarf(act, exp, msgArgs...); !ok {
 		fail(t, err)
 	} else {
 		success(t)
@@ -162,7 +162,7 @@ func NotBeSimilar(t testing.TB, act interface{}, exp interface{}, msgArgs ...int
 // BeOneOf check if the 'act' element one of the element inside the 'exp' array/slice.
 func BeOneOf(t testing.TB, act interface{}, exp interface{}, msgArgs ...interface{}) {
 	t.Helper()
-	if ok, err := is.OneOff(act, exp, msgArgs); !ok {
+	if ok, err := is.OneOff(act, exp, msgArgs...); !ok {
 		fail(t, err)
 	} else {
 		success(t)
