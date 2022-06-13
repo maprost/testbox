@@ -10,11 +10,12 @@ import (
 )
 
 func SingleTest(t testing.TB) {
-	SingleTestWithSkip(t, 2)
+	SingleTestWithSkip(t, 0)
 }
 
+// SingleTestWithSkip skip == 0 is the caller of the method
 func SingleTestWithSkip(t testing.TB, skip int) {
-	fn := functionName(t, skip)
+	fn := functionName(t, 3+skip)
 	//fmt.Printf("args: %s contains '%s'\n", strings.Join(os.Args, ", "), fn)
 
 	skipTest := true

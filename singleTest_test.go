@@ -14,7 +14,7 @@ func TestSingleTest(t *testing.T) {
 }
 
 func TestSingleTestWithSkip(t *testing.T) {
-	testbox.SingleTestWithSkip(t, 0)
+	testbox.SingleTestWithSkip(t, 1)
 
 	fmt.Println("skip me")
 }
