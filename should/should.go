@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"reflect"
 	"testing"
+	"unsafe"
 
 	"github.com/maprost/testbox/internal"
 	"github.com/maprost/testbox/is"
@@ -22,18 +23,33 @@ func BeEqual(t testing.TB, act interface{}, exp interface{}, msgArgs ...interfac
 // BeEqualStructField checks if 'act' == 'exp'
 func BeEqualStructField(t testing.TB, actualStruct interface{}, expectedStruct interface{}, msgArgs ...interface{}) {
 	t.Helper()
-	typeVal := reflect.TypeOf(actualStruct)
-	aVal := reflect.ValueOf(actualStruct)
-	eVal := reflect.ValueOf(expectedStruct)
-	mainMsg := internal.MsgArgs(msgArgs, "struct-field")
-
-	for i := 0; i < typeVal.NumField(); i++ {
-		field := typeVal.Field(i)
-		if field.IsExported() {
-			aField := aVal.Field(i)
-			eField := eVal.Field(i)
-			BeEqual(t, aField.Interface(), eField.Interface(), fmt.Sprintf("%s: %s is not equal", mainMsg, field.Name))
+	valueOf := func(elem interface{}) reflect.Value {
+		val := reflect.ValueOf(elem)
+		if val.Kind() == reflect.Struct {
+			tmp := reflect.New(val.Type())
+			tmp.Elem().Set(val)
+			val = tmp
 		}
+		BeTrue(t, val.Kind() == reflect.Ptr)
+		return val
+	}
+	getUnexportedField := func(field reflect.Value) reflect.Value {
+		return reflect.NewAt(field.Type(), unsafe.Pointer(field.UnsafeAddr())).Elem()
+	}
+
+	aVal := valueOf(actualStruct)
+	eVal := valueOf(expectedStruct)
+	mainMsg := internal.MsgArgs(msgArgs, "struct-field")
+	for i := 0; i < aVal.Elem().Type().NumField(); i++ {
+		field := aVal.Elem().Type().Field(i)
+		aField := aVal.Elem().Field(i)
+		eField := eVal.Elem().Field(i)
+
+		if !field.IsExported() {
+			aField = getUnexportedField(aField)
+			eField = getUnexportedField(eField)
+		}
+		BeEqual(t, aField.Interface(), eField.Interface(), fmt.Sprintf("%s: %s is not equal", mainMsg, field.Name))
 	}
 }
 
