@@ -162,4 +162,27 @@ func TestSimple(t *testing.T) {
 			Fail(t)
 		})
 	})
+
+	t.Run("be equal struct", func(t *testing.T) {
+		type r struct {
+			Blob string
+			Drop bool
+		}
+
+		BeEqualStructField(t,
+			r{Blob: "hello", Drop: true},
+			r{Blob: "hello", Drop: true})
+	})
+
+	t.Run("be equal struct", func(t *testing.T) {
+		type r struct {
+			Blob string
+			Drop bool
+		}
+		testToFail(t, func(t testing.TB) {
+			BeEqualStructField(t,
+				r{Blob: "hello", Drop: true},
+				r{Blob: "world", Drop: true})
+		})
+	})
 }
