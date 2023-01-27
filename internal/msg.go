@@ -34,9 +34,8 @@ func Spacer(txt string) string {
 
 // ------------------------ Message ---------------------------
 
-func Errorf(msgArgs []interface{}, defaultMsg string, valueCheck string) error {
+func MsgArgs(msgArgs []interface{}, defaultMsg string) string {
 	msg := defaultMsg
-
 	if len(msgArgs) > 0 {
 		_, ok := (msgArgs[0]).(string)
 		if ok { // first part is a string
@@ -44,6 +43,11 @@ func Errorf(msgArgs []interface{}, defaultMsg string, valueCheck string) error {
 		}
 	}
 
+	return msg
+}
+
+func Errorf(msgArgs []interface{}, defaultMsg string, valueCheck string) error {
+	msg := MsgArgs(msgArgs, defaultMsg)
 	return fmt.Errorf("%s %s\n%s", failIcon, TxtColor(Yellow, msg), valueCheck)
 }
 

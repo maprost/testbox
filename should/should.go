@@ -1,6 +1,8 @@
 package should
 
 import (
+	"fmt"
+	"reflect"
 	"testing"
 
 	"github.com/maprost/testbox/internal"
@@ -14,6 +16,22 @@ func BeEqual(t testing.TB, act interface{}, exp interface{}, msgArgs ...interfac
 		fail(t, err)
 	} else {
 		success(t)
+	}
+}
+
+// BeEqualStructField checks if 'act' == 'exp'
+func BeEqualStructField(t testing.TB, actualStruct interface{}, expectedStruct interface{}, msgArgs ...interface{}) {
+	t.Helper()
+	typeVal := reflect.TypeOf(actualStruct)
+	aVal := reflect.ValueOf(actualStruct)
+	eVal := reflect.ValueOf(expectedStruct)
+	mainMsg := internal.MsgArgs(msgArgs, "struct-field")
+
+	for i := 0; i < typeVal.NumField(); i++ {
+		field := typeVal.Field(i)
+		aField := aVal.Field(i)
+		eField := eVal.Field(i)
+		BeEqual(t, aField.Interface(), eField.Interface(), fmt.Sprintf("%s: %s is not equal", mainMsg, field.Name))
 	}
 }
 
