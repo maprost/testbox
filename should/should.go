@@ -29,9 +29,11 @@ func BeEqualStructField(t testing.TB, actualStruct interface{}, expectedStruct i
 
 	for i := 0; i < typeVal.NumField(); i++ {
 		field := typeVal.Field(i)
-		aField := aVal.Field(i)
-		eField := eVal.Field(i)
-		BeEqual(t, aField.Interface(), eField.Interface(), fmt.Sprintf("%s: %s is not equal", mainMsg, field.Name))
+		if field.IsExported() {
+			aField := aVal.Field(i)
+			eField := eVal.Field(i)
+			BeEqual(t, aField.Interface(), eField.Interface(), fmt.Sprintf("%s: %s is not equal", mainMsg, field.Name))
+		}
 	}
 }
 

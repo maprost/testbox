@@ -165,13 +165,14 @@ func TestSimple(t *testing.T) {
 
 	t.Run("be equal struct", func(t *testing.T) {
 		type r struct {
-			Blob string
-			Drop bool
+			Blob    string
+			Drop    bool
+			private int
 		}
 
 		BeEqualStructField(t,
-			r{Blob: "hello", Drop: true},
-			r{Blob: "hello", Drop: true})
+			r{Blob: "hello", Drop: true, private: 1},
+			r{Blob: "hello", Drop: true, private: 1})
 	})
 
 	t.Run("be equal struct", func(t *testing.T) {
