@@ -1,6 +1,7 @@
 package is
 
 import (
+	"fmt"
 	"reflect"
 	"strings"
 
@@ -105,13 +106,14 @@ func Length(col interface{}, len int) bool {
 
 // Lengthf checks if len(col) == 'exp'
 func Lengthf(col interface{}, len int, msgArgs ...interface{}) (bool, error) {
-	ok, err := isLength(col, len)
+	ok, colLen, err := isLength(col, len)
 	if err != nil {
 		return false, err
 	}
 
 	if !ok {
-		return false, internal.Errorf(msgArgs, "Wrong length:", internal.Values(col, len))
+		return false, internal.Errorf(msgArgs,
+			fmt.Sprintf("Wrong length %d:", colLen), internal.Values(col, len))
 	}
 	return true, nil
 }
@@ -124,7 +126,7 @@ func Empty(col interface{}) bool {
 
 // Emptyf checks if len(col) == 0
 func Emptyf(col interface{}, msgArgs ...interface{}) (bool, error) {
-	ok, err := isLength(col, 0)
+	ok, _, err := isLength(col, 0)
 	if err != nil {
 		return false, err
 	}
@@ -143,7 +145,7 @@ func NotEmpty(col interface{}) bool {
 
 // NotEmptyf checks if len(col) != 0
 func NotEmptyf(col interface{}, msgArgs ...interface{}) (bool, error) {
-	ok, err := isLength(col, 0)
+	ok, _, err := isLength(col, 0)
 	if err != nil {
 		return false, err
 	}
@@ -373,14 +375,14 @@ func OneOff(act interface{}, exp interface{}, msgArgs ...interface{}) (bool, err
 
 // ====================== Helper ===============================
 
-func isLength(col interface{}, len int) (bool, error) {
+func isLength(col interface{}, len int) (bool, int, error) {
 	switch reflect.TypeOf(col).Kind() {
 	case reflect.Slice, reflect.Array, reflect.Map, reflect.String:
 		a := reflect.ValueOf(col).Len()
-		return a == len, nil
+		return a == len, a, nil
 
 	default:
-		return false, internal.TypeError("Wrong type, should be a slice, array, map or string.", col)
+		return false, 0, internal.TypeError("Wrong type, should be a slice, array, map or string.", col)
 	}
 }
 
@@ -413,11 +415,26 @@ func isNil(act interface{}) bool {
 	return internal.IsNil(act)
 }
 
+// check if element is nil or an empty item
+func isNilOrEmpty(act interface{}) bool {
+	isNilOrEmpty := false
+	if isNil(act) {
+		isNilOrEmpty = true
+	} else if ok, _, _ := isLength(act, 0); ok {
+		isNilOrEmpty = true
+	}
+	return isNilOrEmpty
+}
+
 func isEqual(act interface{}, exp interface{}) bool {
-	if isNil(act) && isNil(exp) {
+	if isNilOrEmpty(act) && isNilOrEmpty(exp) { // to compare empty vs. nil lists
 		return true
 	}
 
+	if isInt(act) && isInt(exp) { // ignore int family problems
+		act = reflect.ValueOf(act).Int()
+		exp = reflect.ValueOf(exp).Int()
+	}
 	return reflect.DeepEqual(act, exp)
 }
 
@@ -437,4 +454,9 @@ func isEqualValue(act interface{}, exp interface{}) bool {
 	}
 
 	return false
+}
+
+// check if element is nil
+func isInt(act interface{}) bool {
+	return internal.IsInt(act)
 }

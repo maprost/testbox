@@ -55,6 +55,10 @@ func TestEqual(t *testing.T) {
 		should.BeTrue(t, is.Equal(&ts1, &ts2))
 		should.BeTrue(t, is.Equal([]TestStruct{ts1}, []TestStruct{ts2}))
 		should.BeTrue(t, is.Equal(nil, nil))
+		should.BeTrue(t, is.Equal(nil, []int{}))
+		should.BeTrue(t, is.Equal(int64(1), int32(1)))
+		should.BeTrue(t, is.Equal(int64(1), int(1)))
+		should.BeTrue(t, is.Equal(int32(1), int(1)))
 
 		var zeroNilPtr *int
 		should.BeTrue(t, is.Equal(nil, zeroNilPtr))
@@ -68,6 +72,8 @@ func TestEqual(t *testing.T) {
 		should.BeFalse(t, is.Equal([]TestStruct{ts1}, []TestStruct{ts3}))
 		should.BeFalse(t, is.Equal(nil, 1))
 		should.BeFalse(t, is.Equal("hello", nil))
+		should.BeFalse(t, is.Equal(int64(1), float64(1)))
+		should.BeFalse(t, is.Equal(int64(1), int16(1)))
 	})
 }
 

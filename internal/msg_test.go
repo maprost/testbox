@@ -103,7 +103,7 @@ func TestValue(t *testing.T) {
 
 	t.Run("array with structs", func(t *testing.T) {
 		a := []error{errors.New("1"), errors.New("2"), errors.New("3")}
-		should.BeEqual(t, clearStrColor(internal.Value(a)), "      value: [1, 2, 3]")
+		should.BeEqual(t, clearStrColor(internal.Value(a)), "      value: [&{s:1}, \n\t&{s:2}, \n\t&{s:3}]")
 	})
 
 	t.Run("map", func(t *testing.T) {
